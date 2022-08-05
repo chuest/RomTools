@@ -1,7 +1,3 @@
-sudo apt update
-sudo apt upgrade -y
-sudo apt install zip unzip python3 python3-pip zipalign android-sdk-ext4-utils -y
-
 romName=${1}
 rootPath=`pwd`	#项目脚本
 mkdir out
@@ -10,16 +6,22 @@ unzip -o $romName -d out
 rm -rf $romName
 cd out
 rm -rf META-INF apex_info.pb care_map.pb payload_properties.txt
-${rootPath}/bin/payload-dumper-go payload.bin ${rootPath}/out
+echo "正在解压payload.bin"
+${rootPath}/bin/payload-dumper-go payload.bin ${rootPath}/out > /dev/null
 rm -rf payload.bin
-unpackimg "system"
-unpackimg "vendor"
-unpackimg "product"
-unpackimg "system_ext"
-repackimg "system"
-repackimg "vendor"
-repackimg "product"
-repackimg "system_ext"
+echo "正在解压system"
+unpackimg system
+echo "正在解压vendor"
+unpackimg vendor
+echo "正在解压product"
+unpackimg product
+echo "正在解压system_ext"
+unpackimg system_ext
+echo "正在解压payload.bin"
+repackimg system
+repackimg vendor
+repackimg product
+repackimg system_ext
 
 
 function unpackimg(){
