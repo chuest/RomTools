@@ -48,114 +48,114 @@ function modify(){
 
 	# Analytics
 	sudo rm -rf system/system/system/app/AnalyticsCore
-	sudo sed -i '/app/AnalyticsCore/d' system/config/system_file_contexts
-	sudo sed -i '/app/AnalyticsCore/d' system/config/system_fs_config
+	sudo sed -i '/app\/AnalyticsCore/d' system/config/system_file_contexts
+	sudo sed -i '/app\/AnalyticsCore/d' system/config/system_fs_config
 	# 电商助手
 	sudo rm -rf system/system/system/app/mab
-	sudo sed -i '/app/mab/d' system/config/system_file_contexts
-	sudo sed -i '/app/mab/d' system/config/system_fs_config
+	sudo sed -i '/app\/mab/d' system/config/system_file_contexts
+	sudo sed -i '/app\/mab/d' system/config/system_fs_config
 	#
 	sudo rm -rf system/system/system/app/MiuiBugReport
-	sudo sed -i '/app/MiuiBugReport/d' system/config/system_file_contexts
-	sudo sed -i '/app/MiuiBugReport/d' system/config/system_fs_config
+	sudo sed -i '/app\/MiuiBugReport/d' system/config/system_file_contexts
+	sudo sed -i '/app\/MiuiBugReport/d' system/config/system_fs_config
 	#
 	sudo rm -rf system/system/system/app/MIUISuperMarket
-	sudo sed -i '/app/MIUISuperMarket/d' system/config/system_file_contexts
-	sudo sed -i '/app/MIUISuperMarket/d' system/config/system_fs_config
+	sudo sed -i '/app\MIUISuperMarket/d' system/config/system_file_contexts
+	sudo sed -i '/app\/MIUISuperMarket/d' system/config/system_fs_config
 	#
 	sudo rm -rf system/system/system/app/MSA
 	sudo sed -i '/app/MSA/d' system/config/system_file_contexts
 	sudo sed -i '/app/MSA/d' system/config/system_fs_config
 	#
 	sudo rm -rf system/system/system/app/SougouInput
-	sudo sed -i '/app/SougouInput/d' system/config/system_file_contexts
-	sudo sed -i '/app/SougouInput/d' system/config/system_fs_config
+	sudo sed -i '/app\/SougouInput/d' system/config/system_file_contexts
+	sudo sed -i '/app\/SougouInput/d' system/config/system_fs_config
 	#
 	sudo rm -rf system/system/system/app/Stk
-	sudo sed -i '/app/Stk/d' system/config/system_file_contexts
-	sudo sed -i '/app/Stk/d' system/config/system_fs_config
+	sudo sed -i '/app\/Stk/d' system/config/system_file_contexts
+	sudo sed -i '/app\/Stk/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/com.ss.android.article.video_154
-	sudo sed -i '/data-app/com\.ss\.android\.article\.video_154/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/com.ss.android.article.video_154/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/com\\\.ss\\\.android\\\.article\\\.video_154/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/com\.ss\.android\.article\.video_154/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/com.ss.android.ugc.aweme_15
-	sudo sed -i '/data-app/com\.ss\.android\.ugc\.aweme_15/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/com.ss.android.ugc.aweme_15/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/com\\\.ss\\\.android\\\.ugc\\\.aweme_15/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/com\.ss\.android\.ugc\.aweme_15/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/com.taobao.taobao_24
-	sudo sed -i '/data-app/com\.taobao\.taobao_24/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/com.taobao.taobao_24/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/com\\\.taobao\\\.taobao_24/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/com\.taobao\.taobao_24/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/com.youku.phone_136
-	sudo sed -i '/data-app/com\.youku\.phone_136/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/com.youku.phone_136/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/com\\\.youku\\\.phone_136/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/com\.youku\.phone_136/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/com.zhihu.android_28
-	sudo sed -i '/data-app/com\.zhihu\.android_28/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/com.zhihu.android_28/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/com\\\.zhihu\\\.android_28/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/com\.zhihu\.android_28/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MiDrive
-	sudo sed -i '/data-app/MiDrive/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MiDrive/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MiDrive/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MiDrive/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MIGalleryLockscreen
-	sudo sed -i '/data-app/MIGalleryLockscreen/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MIGalleryLockscreen/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MIGalleryLockscreen/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MIGalleryLockscreen/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MIShop
-	sudo sed -i '/data-app/MIShop/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MIShop/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MIShop/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MIShop/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MIUICalculator
-	sudo sed -i '/data-app/MIUICalculator/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MIUICalculator/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MIUICalculator/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MIUICalculator/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MIUIDuokanReader
-	sudo sed -i '/data-app/MIUIDuokanReader/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MIUIDuokanReader/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MIUIDuokanReader/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MIUIDuokanReader/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MIUIGameCenter
-	sudo sed -i '/data-app/MIUIGameCenter/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MIUIGameCenter/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MIUIGameCenter/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MIUIGameCenter/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MIUIHuanji
-	sudo sed -i '/data-app/MIUIHuanji/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MIUIHuanji/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MIUIHuanji/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MIUIHuanji/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MIUINewHome
-	sudo sed -i '/data-app/MIUINewHome/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MIUINewHome/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MIUINewHome/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MIUINewHome/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/MIUIYoupin
-	sudo sed -i '/data-app/MIUIYoupin/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/MIUIYoupin/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/MIUIYoupin/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/MIUIYoupin/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/SmartHome
-	sudo sed -i '/data-app/SmartHome/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/SmartHome/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/SmartHome/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/SmartHome/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/data-app/wps-lite
-	sudo sed -i '/data-app/wps-lite/d' system/config/system_file_contexts
-	sudo sed -i '/data-app/wps-lite/d' system/config/system_fs_config
+	sudo sed -i '/data-app\/wps-lite/d' system/config/system_file_contexts
+	sudo sed -i '/data-app\/wps-lite/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/priv-app/MIService
-	sudo sed -i '/priv-app/MIService/d' system/config/system_file_contexts
-	sudo sed -i '/priv-app/MIService/d' system/config/system_fs_config
+	sudo sed -i '/priv-app\/MIService/d' system/config/system_file_contexts
+	sudo sed -i '/priv-app\/MIService/d' system/config/system_fs_config
 
 	sudo rm -rf system/system/system/priv-app/MIUIBrowser
-	sudo sed -i '/priv-app/MIUIBrowser/d' system/config/system_file_contexts
-	sudo sed -i '/priv-app/MIUIBrowser/d' system/config/system_fs_config
+	sudo sed -i '/priv-app\/MIUIBrowser/d' system/config/system_file_contexts
+	sudo sed -i '/priv-app\/MIUIBrowser/d' system/config/system_fs_config
 
 	# 传送门
-	sudo rm -rf system/system/system/priv-app/MIUIContentExtension
-	sudo sed -i '/priv-app/MIUIContentExtension/d' system/config/system_file_contexts
-	sudo sed -i '/priv-app/MIUIContentExtension/d' system/config/system_fs_config
+	#sudo rm -rf system/system/system/priv-app/MIUIContentExtension
+	#sudo sed -i '/priv-app\/MIUIContentExtension/d' system/config/system_file_contexts
+	#sudo sed -i '/priv-app\/MIUIContentExtension/d' system/config/system_fs_config
 
 	# 搜索
 	sudo rm -rf system/system/system/priv-app/MIUIQuickSearchBox
-	sudo sed -i '/priv-app/MIUIQuickSearchBox/d' system/config/system_file_contexts
-	sudo sed -i '/priv-app/MIUIQuickSearchBox/d' system/config/system_fs_config
+	sudo sed -i '/priv-app\/MIUIQuickSearchBox/d' system/config/system_file_contexts
+	sudo sed -i '/priv-app\/MIUIQuickSearchBox/d' system/config/system_fs_config
 
 	# 音乐
 	# sudo rm -rf system/system/system/priv-app/Music
@@ -172,8 +172,8 @@ function modify(){
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' product/config/product_file_contexts
 
 	sudo rm -rf product/product/data-app/BaiduIME
-	sudo sed -i '/data-app/BaiduIME/d' product/config/product_file_contexts
-	sudo sed -i '/data-app/BaiduIME/d' product/config/product_fs_config
+	sudo sed -i '/data-app\/BaiduIME/d' product/config/product_file_contexts
+	sudo sed -i '/data-app\/BaiduIME/d' product/config/product_fs_config
 
 	# DC调光
 	sudo sed -i 's/<bool name=\"support_dc_backlight\">false<\/bool>/<bool name=\"support_dc_backlight\">true<\/bool>/g' product/product/etc/device_features/*xml
