@@ -39,7 +39,7 @@ function repackimg(){
 	outImg="${rootPath}/out/${name}.img"
 	inFiles="${rootPath}/out/${name}/${name}"
 	echo "正在打包${1}.img"
-	${rootPath}/bin/make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
+	sudo ${rootPath}/bin/make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
 }
 
 function modify(){
