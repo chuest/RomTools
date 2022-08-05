@@ -56,7 +56,6 @@ jobs:
     - name: Organize files to server
       run: |
         cd RomTools/out
-        aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload ${{ env.FILE_DATE }}-openwrt-ramips-mt7621-${{ env.DEVICE_NAME }}-squashfs-sysupgrade.bin root/alist/OpenWrt/K2P
         aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload version.txt root/alist/OpenWrt/K2P
 
     - name: Delete workflow runs
