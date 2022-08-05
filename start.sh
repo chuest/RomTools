@@ -10,23 +10,15 @@ function main(){
 	cd out
 	rm -rf META-INF apex_info.pb care_map.pb payload_properties.txt
 	echo "正在解压payload.bin"
-	${rootPath}/bin/payload-dumper-go payload.bin ${rootPath}/out > /dev/null
+	${rootPath}/bin/payload-dumper-go -o ${rootPath}/out payload.bin > /dev/null
 	rm -rf payload.bin
-	echo "正在解压system"
 	unpackimg system
-	echo "正在解压vendor"
 	unpackimg vendor
-	echo "正在解压product"
 	unpackimg product
-	echo "正在解压system_ext"
 	unpackimg system_ext
-	echo "正在合成system"
 	repackimg system
-	echo "正在合成vendor"
 	repackimg vendor
-	echo "正在合成product"
 	repackimg product
-	echo "正在合成system_ext"
 	repackimg system_ext
 }
 
