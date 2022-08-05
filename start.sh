@@ -32,11 +32,11 @@ function repackimg(){
 	name=${1}
 	mount_path="/$name"
 	# if [ "$name" == "system" ];then mount_path="/" ;else mount_path="/$name" ;fi
-	fileContexts = "${rootPath}/out/${name}/config/${name}_file_contexts"
-	fsConfig = "${rootPath}/out/${name}/config/${name}_fs_config"
-	imgSize = `echo "$(du -sb ${rootPath}/out/${name} | awk {'print $1'}) + 104857600" | bc`
-	outImg = "${rootPath}/out/${name}.img"
-	inFiles = "${rootPath}/out/${name}/${name}"
+	fileContexts="${rootPath}/out/${name}/config/${name}_file_contexts"
+	fsConfig="${rootPath}/out/${name}/config/${name}_fs_config"
+	imgSize=`echo "$(sudo du -sb ${rootPath}/out/${name} | awk {'print $1'}) + 104857600" | bc`
+	outImg="${rootPath}/out/${name}.img"
+	inFiles="${rootPath}/out/${name}/${name}"
 	echo "正在打包${1}.img"
 	make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
 }

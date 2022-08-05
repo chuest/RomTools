@@ -6,7 +6,6 @@ on:
       miui:
         description: 'MIUI Rom name'
         required: false
-        default: 'false'
 
 jobs:
   build:
