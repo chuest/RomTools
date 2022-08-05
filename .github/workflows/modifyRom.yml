@@ -1,0 +1,65 @@
+name: Modify MIUI Rom
+
+on:
+  workflow_dispatch:
+    inputs:
+      miui:
+        description: 'MIUI Rom name'
+        required: false
+        default: 'false'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo pip3 install aliyunpan
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        git clone https://github.com/chuest/RomTools
+        ln -sf /workdir/RomTools $GITHUB_WORKSPACE/RomTools
+
+    - name: Download rom
+      run: |
+        cd RomTools
+        aria2c -s 9 -x 2 https://bigota.d.miui.com/$(echo "${{github.event.inputs.miui}}" | awk -F "_" '{print $3}')/${{github.event.inputs.miui}}
+
+    - name: Modify rom
+      id: compile
+      run: |
+        sudo chmod 777 -R RomTools
+        cd RomTools
+        ./start.sh ${{github.event.inputs.miui}}
+
+    - name: Check space usage
+      if: (!cancelled())
+      run: df -hT
+
+    - name: Organize files to server
+      run: |
+        cd RomTools/out
+        aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload ${{ env.FILE_DATE }}-openwrt-ramips-mt7621-${{ env.DEVICE_NAME }}-squashfs-sysupgrade.bin root/alist/OpenWrt/K2P
+        aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload version.txt root/alist/OpenWrt/K2P
+
+    - name: Delete workflow runs
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 3
