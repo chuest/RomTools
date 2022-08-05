@@ -1,4 +1,5 @@
 #!/bin/bash
+
 function main(){
 	romName=${1}
 	rootPath=`pwd`	#项目脚本
@@ -29,8 +30,6 @@ function main(){
 	repackimg system_ext
 }
 
-
-
 function unpackimg(){
 	echo "正在解压${1}.img"
 	python3 ${rootPath}/bin/imgextractor.py ${1}.img ${1}
@@ -49,3 +48,5 @@ function repackimg(){
 	echo "正在打包${1}.img"
 	make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
 }
+
+main
