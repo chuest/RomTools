@@ -49,4 +49,4 @@ function repackimg(){
 	make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
 }
 
-main
+main ${1}
