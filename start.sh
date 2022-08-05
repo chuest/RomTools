@@ -24,7 +24,7 @@ function main(){
 
 function unpackimg(){
 	echo "正在解压${1}.img"
-	python3 ${rootPath}/bin/imgextractor.py ${1}.img ${1}
+	sudo python3 ${rootPath}/bin/imgextractor.py ${1}.img ${1}
 	rm -rf ${1}.img
 }
 
