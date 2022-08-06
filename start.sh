@@ -47,10 +47,8 @@ function repackimg(){
 }
 
 function super(){
-	${rootPath}/bin/lpmake --metadata-size 65536 --super-name super --sparse --virtual-ab --metadata-slots 2 --device super:9126805504 --group main:$(echo $(stat -c "%s" system.img)+$(stat -c "%s" vendor.img)+$(stat -c "%s" system_ext.img)+$(stat -c "%s" product.img)+$(stat -c "%s" odm.img) | bc) --partition system_a:readonly:$(echo $(stat -c "%s" system.img) | bc):main --image system.img --partition vendor_a:readonly:$(echo $(stat -c "%s" vendor.img) | bc):main --image vendor.img --partition product_a:readonly:$(echo $(stat -c "%s" product.img) | bc) main --image product.img --partition system_ext_a:readonly:$(echo $(stat -c "%s" system_ext.img) | bc):main --image system_ext.img --partition odm_a:readonly:$(echo $(stat -c "%s" odm.img) | bc):main --image odm.img --partition system_ext_b:readonly:0:main --partition system_b:readonly:0:main --partition vendor_b:readonly:0:main --partition product_b:readonly:0:main --partition odm_b:readonly:0:main -F --output super.img
+	${rootPath}/bin/lpmake --metadata-size 65536 --super-name super --sparse --virtual-ab --metadata-slots 2 --device super:9126805504 --group main:$(echo $(stat -c "%s" system.img)+$(stat -c "%s" vendor.img)+$(stat -c "%s" system_ext.img)+$(stat -c "%s" product.img)+$(stat -c "%s" odm.img) | bc) --partition system_a:readonly:$(echo $(stat -c "%s" system.img) | bc):main --image system_a=system.img --partition vendor_a:readonly:$(echo $(stat -c "%s" vendor.img) | bc):main --image vendor_a=vendor.img --partition product_a:readonly:$(echo $(stat -c "%s" product.img) | bc) main --image product_a=product.img --partition system_ext_a:readonly:$(echo $(stat -c "%s" system_ext.img) | bc):main --image system_ext_a=system_ext.img --partition odm_a:readonly:$(echo $(stat -c "%s" odm.img) | bc):main --image odm_a=odm.img --partition system_ext_b:readonly:0:main --partition system_b:readonly:0:main --partition vendor_b:readonly:0:main --partition product_b:readonly:0:main --partition odm_b:readonly:0:main -F --output super.img
 }
-
-
 
 function modify(){
 	# system
