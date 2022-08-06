@@ -21,9 +21,9 @@ function main(){
 	repackimg vendor
 	repackimg product
 	repackimg system_ext
-	rm -rf system vendor product system_ext _pycache_
-	zip -q -r rom.zip *
-	rm -rf *.img
+	sudo rm -rf system vendor product system_ext _pycache_
+	sudo zip -q -r rom.zip *
+	sudo rm -rf *.img
 }
 
 function unpackimg(){
@@ -67,8 +67,8 @@ function modify(){
 	sudo sed -i '/app\/MIUISuperMarket/d' system/config/system_fs_config
 	#
 	sudo rm -rf system/system/system/app/MSA
-	sudo sed -i '/app/MSA/d' system/config/system_file_contexts
-	sudo sed -i '/app/MSA/d' system/config/system_fs_config
+	sudo sed -i '/app\/MSA/d' system/config/system_file_contexts
+	sudo sed -i '/app\/MSA/d' system/config/system_fs_config
 	#
 	sudo rm -rf system/system/system/app/SougouInput
 	sudo sed -i '/app\/SougouInput/d' system/config/system_file_contexts
@@ -199,7 +199,7 @@ function modify(){
 	# sudo sed -i 's/<bool name=\"support_led_light\">false<\/bool>/<bool name=\"support_led_light\">true<\/bool>/g' product/product/etc/device_features/*xml
 
 	# 游戏英雄死亡倒计时
-	sudo sed -i '/<\/features>/i\    <bool name=\"support_mi_game_countdown\">true<\/bool>' $file3/*xml
+	sudo sed -i '/<\/features>/i\    <bool name=\"support_mi_game_countdown\">true<\/bool>' product/product/etc/device_features/*xml
 }
 
 main ${1}
