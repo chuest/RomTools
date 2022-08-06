@@ -21,6 +21,9 @@ function main(){
 	repackimg vendor
 	repackimg product
 	repackimg system_ext
+	rm -rf system vendor product system_ext _pycache_
+	zip -q -r rom.zip *
+	rm -rf *.img
 }
 
 function unpackimg(){
@@ -179,6 +182,24 @@ function modify(){
 	sudo sed -i 's/<bool name=\"support_dc_backlight\">false<\/bool>/<bool name=\"support_dc_backlight\">true<\/bool>/g' product/product/etc/device_features/*xml
 	sudo sed -i 's/<bool name=\"support_secret_dc_backlight\">true<\/bool>/<bool name=\"support_secret_dc_backlight\">false<\/bool>/g' product/product/etc/device_features/*xml
 
+	# 智能护眼
+	# sudo sed -i '/<\/features>/i\    <bool name=\"support_smart_eyecare\">true<\/bool>' product/product/etc/device_features/*xml
+
+	# HiFi
+	# sudo sed -i 's/<bool name=\"support_hifi\">false<\/bool>/<bool name=\"support_hifi\">true<\/bool>/g' product/product/etc/device_features/*xml
+
+	# 杜比
+	# sudo sed -i 's/<bool name=\"support_dolby\">false<\/bool>/<bool name=\"support_dolby\">true<\/bool>/g' product/product/etc/device_features/*xml
+
+	# Ai键
+	sudo sed -i 's/<bool name=\"support_ai_task\">false<\/bool>/<bool name=\"support_ai_task\">true<\/bool>/g' product/product/etc/device_features/*xml
+
+	# 呼吸灯
+	# sudo sed -i 's/<bool name=\"support_led_color\">false<\/bool>/<bool name=\"support_led_color\">true<\/bool>/g' product/product/etc/device_features/*xml
+	# sudo sed -i 's/<bool name=\"support_led_light\">false<\/bool>/<bool name=\"support_led_light\">true<\/bool>/g' product/product/etc/device_features/*xml
+
+	# 游戏英雄死亡倒计时
+	sudo sed -i '/<\/features>/i\    <bool name=\"support_mi_game_countdown\">true<\/bool>' $file3/*xml
 }
 
 main ${1}
