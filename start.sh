@@ -21,8 +21,9 @@ function main(){
 	repackimg vendor
 	repackimg product
 	repackimg system_ext
-	sudo rm -rf system vendor product system_ext _pycache_
-	sudo zip -q -r rom.zip *
+	super
+	sudo rm -rf _pycache_ system vendor product system_ext system.img vendor.img product.img system_ext.img
+	sudo zip -q -r rom.zip *.img
 	sudo rm -rf *.img
 }
 
@@ -44,6 +45,12 @@ function repackimg(){
 	echo "正在打包${1}.img"
 	sudo ${rootPath}/bin/make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
 }
+
+function super(){
+	${rootPath}/bin/lpmake --metadata-size 65536 --super-name super --metadata-slots 2 --device super:9126805504 --group main:$(echo $(stat -c "%s" system.img)+$(stat -c "%s" vendor.img)+$(stat -c "%s" system_ext.img)+$(stat -c "%s" product.img)+$(stat -c "%s" odm.img) | bc) --partition system_a:readonly:$(echo $(stat -c "%s" system.img) | bc):main --partition vendor_a:readonly:$(echo $(stat -c "%s" vendor.img) | bc):main --partition product_a:readonly:$(echo $(stat -c "%s" product.img) | bc) main --partition system_ext_a:readonly:$(echo $(stat -c "%s" system_ext.img) | bc):main --partition odm_a:readonly:$(echo $(stat -c "%s" odm.img) | bc):main --partition system_ext_b:readonly:0:main --partition system_b:readonly:0:main --partition vendor_b:readonly:0:main --partition product_b:readonly:0:main --partition odm_b:readonly:0:main -F --sparse --output super.img
+}
+
+
 
 function modify(){
 	# system
@@ -165,14 +172,24 @@ function modify(){
 	# sed -i '/priv-app/Music/d' system/config/system_file_contexts
 	# sed -i '/priv-app/Music/d' system/config/system_fs_config
 
+
 	# system_ext
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system_ext/config/system_ext_file_contexts
+
 
 	# vendor
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' vendor/config/vendor_file_contexts
 
+	# 去除 AVB
+	# sudo sed -i "s/fileencryption=/encryptable=/g" vendor/vendor/etc/fastab.qcom
+	# sudo sed -i 's/ro,/ro,noatime,/g' vendor/vendor/etc/fastab.qcom
+	sudo sed -i 's/,avb//g' vendor/vendor/etc/fastab.qcom
+	sudo sed -i 's/,avb=vbmeta_system//g' vendor/vendor/etc/fastab.qcom
+	sudo sed -i 's/,avb_keys=\/avb\/q-gsi.avbpubkey:\/avb\/r-gsi.avbpubkey:\/avb\/s-gsi.avbpubkey//g' vendor/vendor/etc/fastab.qcom
+
+
 	# product
-	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' product/config/product_file_contexts
+	sudo sed -i '0,/[a-z]\+\/lost\\+fou#nd/{/[a-z]\+\/lost\\+found/d}' product/config/product_file_contexts
 
 	sudo rm -rf product/product/data-app/BaiduIME
 	sudo sed -i '/data-app\/BaiduIME/d' product/config/product_file_contexts
@@ -200,6 +217,8 @@ function modify(){
 
 	# 游戏英雄死亡倒计时
 	sudo sed -i '/<\/features>/i\    <bool name=\"support_mi_game_countdown\">true<\/bool>' product/product/etc/device_features/*xml
+
+
 }
 
 main ${1}
