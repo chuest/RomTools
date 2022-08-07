@@ -22,7 +22,7 @@ function main(){
 	repackimg product
 	repackimg system_ext
 	super
-	sudo rm -rf _pycache_ system vendor product system_ext # system.img vendor.img product.img system_ext.img
+	sudo rm -rf _pycache_ system vendor product system_ext system.img vendor.img product.img system_ext.img
 	sudo zip -q -r rom.zip *.img
 	sudo rm -rf *.img
 }
@@ -46,12 +46,9 @@ function repackimg(){
 	sudo ${rootPath}/bin/make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
 }
 
-# function super(){
-	# ${rootPath}/bin/lpmake --metadata-size 65536 --super-name super --sparse --virtual-ab --metadata-slots 2 --device super:9126805504 --group main:$(echo $(stat -c "%s" system.img)+$(stat -c "%s" vendor.img)+$(stat -c "%s" system_ext.img)+$(stat -c "%s" product.img)+$(stat -c "%s" odm.img) | bc) --partition system_a:readonly:$(echo $(stat -c "%s" system.img) | bc):main --image system_a=system.img --partition vendor_a:readonly:$(echo $(stat -c "%s" vendor.img) | bc):main --image vendor_a=vendor.img --partition product_a:readonly:$(echo $(stat -c "%s" product.img) | bc) main --image product_a=product.img --partition system_ext_a:readonly:$(echo $(stat -c "%s" system_ext.img) | bc):main --image system_ext_a=system_ext.img --partition odm_a:readonly:$(echo $(stat -c "%s" odm.img) | bc):main --image odm_a=odm.img --partition system_ext_b:readonly:0:main --partition system_b:readonly:0:main --partition vendor_b:readonly:0:main --partition product_b:readonly:0:main --partition odm_b:readonly:0:main -F --output super.img
-}
-
 function super(){
-	${rootPath}/bin/lpmake --metadata-size 65536 --super-name super --sparse --virtual-ab --metadata-slots 2 --device super:9126805504 --group main:$(echo $(stat -c "%s" system.img)+$(stat -c "%s" vendor.img)+$(stat -c "%s" system_ext.img)+$(stat -c "%s" product.img)+$(stat -c "%s" odm.img) | bc) --partition system_a:readonly:$(echo $(stat -c "%s" system.img) | bc):main --partition vendor_a:readonly:$(echo $(stat -c "%s" vendor.img) | bc):main --partition product_a:readonly:$(echo $(stat -c "%s" product.img) | bc) main --partition system_ext_a:readonly:$(echo $(stat -c "%s" system_ext.img) | bc):main --partition odm_a:readonly:$(echo $(stat -c "%s" odm.img) | bc):main --partition system_ext_b:readonly:0:main --partition system_b:readonly:0:main --partition vendor_b:readonly:0:main --partition product_b:readonly:0:main --partition odm_b:readonly:0:main -F --output super.img
+	# $(echo $(stat -c "%s" system.img)+$(stat -c "%s" vendor.img)+$(stat -c "%s" system_ext.img)+$(stat -c "%s" product.img)+$(stat -c "%s" odm.img) | bc)
+	# ${rootPath}/bin/lpmake --metadata-size 65536 --super-name super --device super:9126805504 --group main_a:9126805504 --group main_b:9126805504 --metadata-slots 3 --virtual-ab --partition system_a:readonly:$(echo $(stat -c "%s" system.img) | bc):main_a --image system_a=system.img --partition system_b:readonly:0:main_b --partition vendor_a:readonly:$(echo $(stat -c "%s" vendor.img) | bc):main_a --image vendor_a=vendor.img --partition vendor_b:readonly:0:main_b --partition product_a:readonly:$(echo $(stat -c "%s" product.img) | bc):main_a --image product_a=product.img --partition product_b:readonly:0:main_b --partition system_ext_a:readonly:$(echo $(stat -c "%s" system_ext.img) | bc):main_a --image system_ext_a=system_ext.img --partition system_ext_b:readonly:0:main_b --partition odm_a:readonly:$(echo $(stat -c "%s" odm.img) | bc):main_a --image odm_a=odm.img --partition odm_b:readonly:0:main_b --sparse --output super.img
 }
 
 function modify(){
@@ -183,8 +180,6 @@ function modify(){
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' vendor/config/vendor_file_contexts
 
 	# 去除 AVB
-	# sudo sed -i "s/fileencryption=/encryptable=/g" vendor/vendor/etc/fstab.qcom
-	# sudo sed -i 's/ro,/ro,noatime,/g' vendor/vendor/etc/fstab.qcom
 	sudo sed -i 's/,avb//g' vendor/vendor/etc/fstab.qcom
 	sudo sed -i 's/,avb=vbmeta_system//g' vendor/vendor/etc/fstab.qcom
 	sudo sed -i 's/,avb_keys=\/avb\/q-gsi.avbpubkey:\/avb\/r-gsi.avbpubkey:\/avb\/s-gsi.avbpubkey//g' vendor/vendor/etc/fstab.qcom
