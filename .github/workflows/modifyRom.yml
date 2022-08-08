@@ -52,12 +52,25 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-    - name: Organize files to server
+    - name: Organize files
       run: |
         cd RomTools/out
         name=miui_alioth_chuest_$(echo "${{github.event.inputs.miui}}" | awk -F "_" '{print $3}')_$(((md5sum rom.zip) | awk '{print $1}') | cut -c -10)
         mv rom.zip ${name}.zip
-        aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload ${name}.zip root/alist/Rom/alioth
+        echo "NAME=${name}" >> $GITHUB_ENV
+        echo "ROMPATH=$PWD" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
+
+    - name: Upload firmware directory
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: ${{ env.NAME }}
+        path: ${{ env.ROMPATH }}
+
+    #- name: Organize files to server
+    #  run: |
+    #    aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload ${name}.zip root/alist/Rom/alioth
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main

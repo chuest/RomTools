@@ -21,8 +21,8 @@ function main(){
 	repackimg vendor
 	repackimg product
 	repackimg system_ext
-	super
-	sudo rm -rf _pycache_ system vendor product system_ext system.img vendor.img product.img system_ext.img
+	# super
+	sudo rm -rf _pycache_ system vendor product system_ext # system.img vendor.img product.img system_ext.img
 	sudo zip -q -r rom.zip *.img
 	sudo rm -rf *.img
 }
