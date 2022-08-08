@@ -15,12 +15,12 @@ function main(){
 	unpackimg system
 	unpackimg vendor
 	unpackimg product
-	unpackimg system_ext
+	#unpackimg system_ext
 	modify
 	repackimg system
 	repackimg vendor
 	repackimg product
-	repackimg system_ext
+	#repackimg system_ext
 	# super
 	sudo rm -rf _pycache_ system vendor product system_ext # system.img vendor.img product.img system_ext.img
 	sudo zip -q -r rom.zip *.img
@@ -173,7 +173,7 @@ function modify(){
 
 
 	# system_ext
-	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system_ext/config/system_ext_file_contexts
+	# sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system_ext/config/system_ext_file_contexts
 
 
 	# vendor

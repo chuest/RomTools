@@ -58,11 +58,9 @@ jobs:
         mv rom.zip ${name}.zip
         echo "NAME=${name}" >> $GITHUB_ENV
         echo "ROMPATH=$PWD" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
         name: ${{ env.NAME }}
         path: ${{ env.ROMPATH }}
