@@ -61,8 +61,11 @@ function modify(){
 	mkdir Magisk
 	unzip -o ${rootPath}/out/Magisk.zip -d Magisk >/dev/null 2>&1
 	sudo rm -rf Magisk.zip
+	tree
 	sudo mv ${rootPath}/out/Magisk/lib/x86/libmagiskboot.so ${rootPath}/bin/magiskboot
+	tree
 	sudo rm -rf Magisk
+	tree
 	echo "正在使用magisk修补boot"
 	sudo ${rootPath}/bin/magiskboot unpack boot.img >/dev/null 2>&1
 	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
