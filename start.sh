@@ -50,17 +50,19 @@ function super(){
 function modify(){
 	# replace vbmeta images
 	echo "正在去除vbmeta验证"
-	[ -f "$targetVbmetaImage" ] && cp -rf ${rootPath}/files/vbmeta.img ${rootPath}/out/vbmeta.img
-	[ -f "$targetVbmetaSystemImage" ] && cp -rf ${rootPath}/files/vbmeta_system.img ${rootPath}/out/vbmeta_system.img
-	# [ -f "$targetVbmetaVendorImage" ] && cp -rf ${rootPath}/files/vbmeta_vendor.img ${rootPath}/out/vbmeta_vendor.img
+	cp -rf ${rootPath}/files/vbmeta.img ${rootPath}/out/vbmeta.img
+	cp -rf ${rootPath}files/vbmeta_system.img ${rootPath}/out/vbmeta_system.img
+	# [ -f "$targetVbmetaVendorImage" ] && cp -rf files/vbmeta_vendor.img out/vbmeta_vendor.img
 
-	# sed -i 's/\x00\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/\x02\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/g' ${rootPath}/files/vbmeta.img
+	# sed -i 's/\x00\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/\x02\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/g' files/vbmeta.img
 
 	# remove avb parttn
-	cp ${rootPath}/files/Magisk.apk Magisk.zip
-	unzip -o Magisk.zip -d Magisk >/dev/null 2>&1
-	sudo mv Magisk/lib/x86/libmagiskboot.so ${rootPath}/bin/magiskboot
+	cp ${rootPath}/files/Magisk.apk ${rootPath}/out/Magisk.zip
+	mkdir Magisk
+	unzip -o ${rootPath}/out/Magisk.zip -d Magisk >/dev/null 2>&1
+	sudo mv ${rootPath}/out/Magisk/lib/x86/libmagiskboot.so ${rootPath}/bin/magiskboot
 	echo "正在使用magisk修补boot"
+	echo ${rootPath}
 	sudo ${rootPath}/bin/magiskboot unpack boot.img >/dev/null 2>&1
 	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
 	for dt in dtb kernel_dtb extra; do
