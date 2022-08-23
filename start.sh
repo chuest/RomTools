@@ -97,9 +97,8 @@ function modify(){
 
 	# system
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system/config/system_file_contexts
-
-	sudo cat ${rootPath}/files/system_file_contexts_add.txt >> system/config/system_file_contexts
-	sudo cat ${rootPath}/files/system_fs_config_add.txt >> system/config/system_fs_config
+	sudo sh -c "cat ${rootPath}/files/system_file_contexts_add.txt >> system/config/system_file_contexts"
+	sudo sh -c "cat ${rootPath}/files/system_fs_config_add.txt >> system/config/system_fs_config"
 
 	sudo rm -rf system/system/verity_key
 	sudo rm -rf system/system/system/media/theme/miui_mod_icons/com.google.android.apps.nbu
