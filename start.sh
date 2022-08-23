@@ -62,7 +62,7 @@ function modify(){
 	unzip -o ${rootPath}/out/Magisk.zip -d Magisk >/dev/null 2>&1
 	sudo mv ${rootPath}/out/Magisk/lib/x86/libmagiskboot.so ${rootPath}/bin/magiskboot
 	echo "正在使用magisk修补boot"
-	echo ${rootPath}
+	tree
 	sudo ${rootPath}/bin/magiskboot unpack boot.img >/dev/null 2>&1
 	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
 	for dt in dtb kernel_dtb extra; do
@@ -98,8 +98,8 @@ function modify(){
 	# system
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system/config/system_file_contexts
 
-	sudo cat ${rootPath}/files/system_file_contexts_add.txt >>system/config/system_file_contexts
-	sudo cat ${rootPath}/files/system_fs_config_add.txt >>system/config/system_fs_config
+	sudo cat ${rootPath}/files/system_file_contexts_add.txt >> system/config/system_file_contexts
+	sudo cat ${rootPath}/files/system_fs_config_add.txt >> system/config/system_fs_config
 
 	sudo rm -rf system/system/verity_key
 	sudo rm -rf system/system/system/media/theme/miui_mod_icons/com.google.android.apps.nbu
@@ -108,8 +108,8 @@ function modify(){
 	sudo rm -rf system/system/system/app/AnalyticsCore/*
 	sudo cp ${rootPath}/files/AnalyticsCore.apk system/system/system/app/AnalyticsCore/AnalyticsCore.apk
 	# 酷安
-	sudo mkdir system/system/system/data-app/Coolapk
-	sudo cp ${rootPath}/files/Coolapk.apk system/system/system/data-app/Coolapk/Coolapk.apk
+	sudo mkdir system/system/system/data-app/CoolApk
+	sudo cp ${rootPath}/files/CoolApk.apk system/system/system/data-app/CoolApk/CoolApk.apk
 	# MT管理器
 	sudo mkdir system/system/system/data-app/MTManager
 	sudo cp ${rootPath}/files/MTManager.apk system/system/system/data-app/MTManager/MTManager.apk
