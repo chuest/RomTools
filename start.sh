@@ -58,29 +58,29 @@ function modify(){
 
 	# remove avb parttn
 	cp ${rootPath}/files/Magisk.apk Magisk.zip
-	unzip -o Magisk.zip -d Magisk
+	unzip -o Magisk.zip -d Magisk >/dev/null 2>&1
 	sudo mv Magisk/lib/x86/libmagiskboot.so ${rootPath}/bin/magiskboot
 	echo "正在使用magisk修补boot"
-	${rootPath}/bin/magiskboot unpack boot.img >/dev/null 2>&1
-	${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
+	sudo ${rootPath}/bin/magiskboot unpack boot.img >/dev/null 2>&1
+	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
 	for dt in dtb kernel_dtb extra; do
-		[ -f $dt ] && ${rootPath}/bin/magiskboot dtb $dt patch
+		[ -f $dt ] && sudo ${rootPath}/bin/magiskboot dtb $dt patch
 	done
-	${rootPath}/bin/magiskboot repack boot.img >/dev/null 2>&1
-	rm -rf *kernel* *dtb* ramdisk.cpio*
+	sudo ${rootPath}/bin/magiskboot repack boot.img >/dev/null 2>&1
+	sudo rm -rf *kernel* *dtb* ramdisk.cpio*
 	[ -f new-boot.img ] && cp -rf new-boot.img boot.img
-	rm -rf new-boot.img
+	sudo rm -rf new-boot.img
 
 	echo "正在使用magisk修补vendor_boot"
-	${rootPath}/bin/magiskboot unpack vendor_boot.img >/dev/null 2>&1
-	${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
+	sudo ${rootPath}/bin/magiskboot unpack vendor_boot.img >/dev/null 2>&1
+	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
 	for dt in dtb kernel_dtb extra; do
-        [ -f $dt ] && ${rootPath}/bin/magiskboot dtb $dt patch
+        [ -f $dt ] && sudo ${rootPath}/bin/magiskboot dtb $dt patch
 	done
-	${rootPath}/bin/magiskboot repack vendor_boot.img >/dev/null 2>&1
-	rm -rf *kernel* *dtb* ramdisk.cpio*
+	sudo ${rootPath}/bin/magiskboot repack vendor_boot.img >/dev/null 2>&1
+	sudo rm -rf *kernel* *dtb* ramdisk.cpio*
 	[ -f new-boot.img ] && cp -rf new-boot.img vendor_boot.img
-	rm -rf new-boot.img
+	sudo rm -rf new-boot.img
 
 	# buil twrp recovery for vab devices
 	#${rootPath}/bin/magiskboot unpack boot.img >/dev/null 2>&1
@@ -96,8 +96,8 @@ function modify(){
 	# system
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system/config/system_file_contexts
 
-	cat ${rootPath}/files/system_file_contexts_add.txt >>system/config/system_file_contexts
-	cat ${rootPath}/files/system_fs_config_add.txt >>system/config/system_fs_config
+	sudo cat ${rootPath}/files/system_file_contexts_add.txt >>system/config/system_file_contexts
+	sudo cat ${rootPath}/files/system_fs_config_add.txt >>system/config/system_fs_config
 
 	sudo rm -rf system/system/verity_key
 	sudo rm -rf system/system/system/media/theme/miui_mod_icons/com.google.android.apps.nbu
