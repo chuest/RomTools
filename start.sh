@@ -22,6 +22,8 @@ function main(){
 	repackimg system
 	repackimg vendor
 	repackimg product
+	mv images/system_ext.img system_ext.img
+	mv images/odm.img odm.img
 	super
 	sudo rm -rf _pycache_ system vendor product system.img vendor.img product.img system_ext.img odm.img
 	zstd --rm super.img
@@ -99,8 +101,8 @@ function boot(){
 function vbmeta(){
 	# 替换 vbmeta 镜像
 	echo "正在去除 vbmeta 验证"
-	cp -rf ${rootPath}/files/vbmeta.img ${rootPath}/out/images/vbmeta.img
-	cp -rf ${rootPath}/files/vbmeta_system.img ${rootPath}/out/images/vbmeta_system.img
+	cp -rf ${rootPath}/files/images/vbmeta.img ${rootPath}/out/images/vbmeta.img
+	cp -rf ${rootPath}/files/images/vbmeta_system.img ${rootPath}/out/images/vbmeta_system.img
 
 	# sed -i 's/\x00\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/\x02\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/g' files/vbmeta.img
 
@@ -116,8 +118,8 @@ function modify(){
 	sudo rm -rf system/system/verity_key
 	sudo rm -rf system/system/system/media/theme/miui_mod_icons/dynamic/com.google.android.apps.nbu
 
-	sudo cp -rf ${rootPath}/files/config/com.android.settings/system/system/system/media/theme/default
-	sudo cp -rf ${rootPath}/files/config/com.android.systemui/system/system/system/media/theme/default
+	sudo cp -rf ${rootPath}/files/config/com.android.settings system/system/system/media/theme/default/com.android.settings
+	sudo cp -rf ${rootPath}/files/config/com.android.systemui system/system/system/media/theme/default/com.android.systemui
 	# Analytics
 	sudo rm -rf system/system/system/app/AnalyticsCore/*
 	sudo cp ${rootPath}/files/app/AnalyticsCore.apk system/system/system/app/AnalyticsCore/AnalyticsCore.apk
