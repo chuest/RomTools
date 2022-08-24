@@ -7,4 +7,3 @@ system/system/data-app/MTManager/MTManager.apk 0 0 0644
 system/system/data-app/Magisk 0 0 0755
 system/system/data-app/Magisk/Magisk.apk 0 0 0644
 system/system/app/Updater/Updater.apk.bak 0 0 0644
-system/system/app/PowerKeeper/PowerKeeper.apk.bak 0 0 0644

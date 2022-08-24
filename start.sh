@@ -8,30 +8,39 @@ function main(){
 	unzip -o $romName -d out
 	rm -rf $romName
 	cd out
+	mkdir images
 	rm -rf META-INF apex_info.pb care_map.pb payload_properties.txt
-	echo "正在解压payload.bin"
-	${rootPath}/bin/payload-dumper-go -o ${rootPath}/out payload.bin > /dev/null
+	echo "正在解压 payload.bin"
+	${rootPath}/bin/payload-dumper-go -o ${rootPath}/out/images payload.bin > /dev/null
 	rm -rf payload.bin
 	unpackimg system
 	unpackimg vendor
 	unpackimg product
+	vbmeta
+	boot
 	modify
 	repackimg system
 	repackimg vendor
 	repackimg product
 	super
 	sudo rm -rf _pycache_ system vendor product system.img vendor.img product.img system_ext.img odm.img
-	sudo zip -q -r rom.zip *.img
-	sudo rm -rf *.img
+	zstd --rm super.img
+	mv super.img.zst images/super.img.zst
+	cp -rf ${rootPath}/files/bin ${rootPath}/out/bin
+	cp -rf ${rootPath}/files/META-INF ${rootPath}/out/META-INF
+	sudo zip -q -r rom.zip images bin META-INF
 }
 
 function unpackimg(){
-	echo "正在解压${1}.img"
+	### 解包
+	mv images/${1}.img ${1}.img
+	echo "正在解压 ${1}.img"
 	sudo python3 ${rootPath}/bin/imgextractor.py ${1}.img ${1}
 	rm -rf ${1}.img
 }
 
 function repackimg(){
+	### 打包 ext4
 	name=${1}
 	mount_path="/$name"
 	fileContexts="${rootPath}/out/${name}/config/${name}_file_contexts"
@@ -39,25 +48,20 @@ function repackimg(){
 	imgSize=`echo "$(sudo du -sb ${rootPath}/out/${name} | awk {'print $1'}) + 104857600" | bc`
 	outImg="${rootPath}/out/${name}.img"
 	inFiles="${rootPath}/out/${name}/${name}"
-	echo "正在打包${1}.img"
+	echo "正在打包 ${1}.img"
 	sudo ${rootPath}/bin/make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
 }
 
 function super(){
+	### 打包 super
 	${rootPath}/bin/lpmake --metadata-size 65536 --super-name super --device super:9126805504 --group main_a:9126805504 --group main_b:9126805504 --metadata-slots 3 --virtual-ab --partition system_a:readonly:$(echo $(stat -c "%s" system.img) | bc):main_a --image system_a=system.img --partition system_b:readonly:0:main_b --partition vendor_a:readonly:$(echo $(stat -c "%s" vendor.img) | bc):main_a --image vendor_a=vendor.img --partition vendor_b:readonly:0:main_b --partition product_a:readonly:$(echo $(stat -c "%s" product.img) | bc):main_a --image product_a=product.img --partition product_b:readonly:0:main_b --partition system_ext_a:readonly:$(echo $(stat -c "%s" system_ext.img) | bc):main_a --image system_ext_a=system_ext.img --partition system_ext_b:readonly:0:main_b --partition odm_a:readonly:$(echo $(stat -c "%s" odm.img) | bc):main_a --image odm_a=odm.img --partition odm_b:readonly:0:main_b --sparse --output super.img
 }
 
-function modify(){
-	# replace vbmeta images
-	echo "正在去除vbmeta验证"
-	cp -rf ${rootPath}/files/vbmeta.img ${rootPath}/out/vbmeta.img
-	cp -rf ${rootPath}/files/vbmeta_system.img ${rootPath}/out/vbmeta_system.img
-	# [ -f "$targetVbmetaVendorImage" ] && cp -rf files/vbmeta_vendor.img out/vbmeta_vendor.img
-
-	# sed -i 's/\x00\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/\x02\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/g' files/vbmeta.img
-
-	# remove avb parttn
-	echo "正在使用magisk修补boot"
+function boot(){
+	# 去除 AVB 验证
+	mv images/boot.img boot.img
+	mv images/vendor_boot.img vendor_boot.img
+	echo "正在使用 magisk 修补 boot"
 	sudo ${rootPath}/bin/magiskboot unpack boot.img >/dev/null 2>&1
 	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
 	for dt in dtb kernel_dtb extra; do
@@ -65,10 +69,10 @@ function modify(){
 	done
 	sudo ${rootPath}/bin/magiskboot repack boot.img >/dev/null 2>&1
 	sudo rm -rf *kernel* *dtb* ramdisk.cpio*
-	[ -f new-boot.img ] && cp -rf new-boot.img boot.img
+	[ -f new-boot.img ] && cp -rf new-boot.img ${rootPath}/out/images/boot.img
 	sudo rm -rf new-boot.img
 
-	echo "正在使用magisk修补vendor_boot"
+	echo "正在使用 magisk 修补 vendor_boot"
 	sudo ${rootPath}/bin/magiskboot unpack vendor_boot.img >/dev/null 2>&1
 	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
 	for dt in dtb kernel_dtb extra; do
@@ -76,7 +80,7 @@ function modify(){
 	done
 	sudo ${rootPath}/bin/magiskboot repack vendor_boot.img >/dev/null 2>&1
 	sudo rm -rf *kernel* *dtb* ramdisk.cpio*
-	[ -f new-boot.img ] && cp -rf new-boot.img vendor_boot.img
+	[ -f new-boot.img ] && cp -rf new-boot.img ${rootPath}/out/images/vendor_boot.img
 	sudo rm -rf new-boot.img
 
 	# buil twrp recovery for vab devices
@@ -90,30 +94,44 @@ function modify(){
 	#cp -rf new-boot.img tmp/boot_twrp.img
 	#rm -rf *kernel* *dtb* ramdisk.cpio* new-boot.img
 
+}
+
+function vbmeta(){
+	# 替换 vbmeta 镜像
+	echo "正在去除 vbmeta 验证"
+	cp -rf ${rootPath}/files/vbmeta.img ${rootPath}/out/images/vbmeta.img
+	cp -rf ${rootPath}/files/vbmeta_system.img ${rootPath}/out/images/vbmeta_system.img
+
+	# sed -i 's/\x00\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/\x02\x00\x00\x00\x00\x61\x76\x62\x74\x6F\x6F\x6C\x20\x31\x2E\x31\x2E\x30/g' files/vbmeta.img
+
+}
+
+function modify(){
+
 	# system
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system/config/system_file_contexts
-	sudo sh -c "cat ${rootPath}/files/system_file_contexts_add.txt >> system/config/system_file_contexts"
-	sudo sh -c "cat ${rootPath}/files/system_fs_config_add.txt >> system/config/system_fs_config"
+	sudo sh -c "cat ${rootPath}/files/config/system_file_contexts_add.txt >> system/config/system_file_contexts"
+	sudo sh -c "cat ${rootPath}/files/config/system_fs_config_add.txt >> system/config/system_fs_config"
 
 	sudo rm -rf system/system/verity_key
-	sudo rm -rf system/system/system/media/theme/miui_mod_icons/com.google.android.apps.nbu
 	sudo rm -rf system/system/system/media/theme/miui_mod_icons/dynamic/com.google.android.apps.nbu
+
+	sudo cp -rf ${rootPath}/files/config/com.android.settings/system/system/system/media/theme/default
+	sudo cp -rf ${rootPath}/files/config/com.android.systemui/system/system/system/media/theme/default
 	# Analytics
 	sudo rm -rf system/system/system/app/AnalyticsCore/*
-	sudo cp ${rootPath}/files/AnalyticsCore.apk system/system/system/app/AnalyticsCore/AnalyticsCore.apk
+	sudo cp ${rootPath}/files/app/AnalyticsCore.apk system/system/system/app/AnalyticsCore/AnalyticsCore.apk
 	# 酷安
 	sudo mkdir system/system/system/data-app/CoolApk
-	sudo cp ${rootPath}/files/CoolApk.apk system/system/system/data-app/CoolApk/CoolApk.apk
+	sudo cp ${rootPath}/files/app/CoolApk.apk system/system/system/data-app/CoolApk/CoolApk.apk
 	# MT管理器
 	sudo mkdir system/system/system/data-app/MTManager
-	sudo cp ${rootPath}/files/MTManager.apk system/system/system/data-app/MTManager/MTManager.apk
+	sudo cp ${rootPath}/files/app/MTManager.apk system/system/system/data-app/MTManager/MTManager.apk
 	# Magisk
 	sudo mkdir system/system/system/data-app/Magisk
-	sudo cp ${rootPath}/files/Magisk.apk system/system/system/data-app/Magisk/Magisk.apk
-	#
+	sudo cp ${rootPath}/files/app/Magisk.apk system/system/system/data-app/Magisk/Magisk.apk
+	# 系统更新
 	sudo mv system/system/system/app/Updater/Updater.apk system/system/system/app/Updater/Updater.apk.bak
-	#
-	sudo mv system/system/system/app/PowerKeeper/PowerKeeper.apk system/system/system/app/PowerKeeper/PowerKeeper.apk.bak
 	# 电商助手
 	sudo rm -rf system/system/system/app/mab
 	#
