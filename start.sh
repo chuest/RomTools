@@ -117,8 +117,8 @@ function modify(){
 	##### system
 	### Modify config
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system/config/system_file_contexts
-	sudo sh -c "cat ${rootPath}/files/config/files/config/systemContextsAdd >> system/config/system_file_contexts"
-	sudo sh -c "cat ${rootPath}/files/config/files/config/systemConfigAdd >> system/config/system_fs_config"
+	sudo sh -c "cat ${rootPath}/files/config/systemContextsAdd >> system/config/system_file_contexts"
+	sudo sh -c "cat ${rootPath}/files/config/systemConfigAdd >> system/config/system_fs_config"
 
 	### Repalce files
 	# Analytics
