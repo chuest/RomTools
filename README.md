@@ -10,12 +10,13 @@
 
 适用于 Redmi K40 ，机型代号 alioth 。
 
-在 Actions 界面创建 Github Actions ，创建时填入开发版包名即可。
+fork 本项目，并在 Secret 处填入阿里云盘的 Token 后，在 Actions 界面创建工作流，创建时填入开发版包名即可。
 
 ## 更改内容 [![](https://img.shields.io/badge/-更改内容-F5F5F5.svg)](#更改内容-)
 
 修改系统分区可读写
 精简部分无用 APP
+内置酷安
 加入 DC 调光
 
 ## 致谢

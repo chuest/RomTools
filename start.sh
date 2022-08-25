@@ -141,6 +141,7 @@ function modify(){
 	### Remove files
 	for file in $(cat ${rootPath}/files/config/removeFiles) ; do
 		if [ -f "${file}" ] || [ -d "${file}" ] ;then
+			echo "Delete ${file}"
 			sudo rm -rf "${file}"
 		fi
 	done
@@ -151,9 +152,9 @@ function modify(){
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' vendor/config/vendor_file_contexts
 
 	# 去除 AVB
-	sudo sed -i 's/,avb//g' vendor/vendor/etc/fstab.qcom
-	sudo sed -i 's/,avb=vbmeta_system//g' vendor/vendor/etc/fstab.qcom
-	sudo sed -i 's/,avb_keys=\/avb\/q-gsi.avbpubkey:\/avb\/r-gsi.avbpubkey:\/avb\/s-gsi.avbpubkey//g' vendor/vendor/etc/fstab.qcom
+	#sudo sed -i 's/,avb//g' vendor/vendor/etc/fstab.qcom
+	#sudo sed -i 's/,avb=vbmeta_system//g' vendor/vendor/etc/fstab.qcom
+	#sudo sed -i 's/,avb_keys=\/avb\/q-gsi.avbpubkey:\/avb\/r-gsi.avbpubkey:\/avb\/s-gsi.avbpubkey//g' vendor/vendor/etc/fstab.qcom
 
 
 	##### product
@@ -161,8 +162,8 @@ function modify(){
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' product/config/product_file_contexts
 
 	# DC调光
-	sudo sed -i 's/<bool name=\"support_dc_backlight\">false<\/bool>/<bool name=\"support_dc_backlight\">true<\/bool>/g' product/product/etc/device_features/*xml
-	sudo sed -i 's/<bool name=\"support_secret_dc_backlight\">true<\/bool>/<bool name=\"support_secret_dc_backlight\">false<\/bool>/g' product/product/etc/device_features/*xml
+	#sudo sed -i 's/<bool name=\"support_dc_backlight\">false<\/bool>/<bool name=\"support_dc_backlight\">true<\/bool>/g' product/product/etc/device_features/*xml
+	#sudo sed -i 's/<bool name=\"support_secret_dc_backlight\">true<\/bool>/<bool name=\"support_secret_dc_backlight\">false<\/bool>/g' product/product/etc/device_features/*xml
 
 	# 智能护眼
 	# sudo sed -i '/<\/features>/i\    <bool name=\"support_smart_eyecare\">true<\/bool>' product/product/etc/device_features/*xml
