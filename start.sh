@@ -11,7 +11,7 @@ function main(){
 	mkdir images
 	rm -rf META-INF apex_info.pb care_map.pb payload_properties.txt
 	echo "正在解压 payload.bin"
-	${rootPath}/bin/payload-dumper-go -o ${rootPath}/out/images payload.bin > /dev/null
+	${rootPath}/bin/payload-dumper-go -o ${rootPath}/out/images payload.bin > /dev/null 2>&1
 	rm -rf payload.bin
 	unpackimg system
 	unpackimg vendor
