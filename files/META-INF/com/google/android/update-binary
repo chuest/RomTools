@@ -22,15 +22,6 @@ package_extract_file() {
   unzip -p "$ZIPFILE" $1 >$2
 }
 
-package_extract_zstd() {
-  if [ "$lang" == "chinese" ]; then
-    ui_print " - 正在刷入 $(echo $1 | awk -F "/" '{print $NF}') 至 $(echo $2 | awk -F "/" '{print $NF}') 分区"
-  else
-    ui_print " - flash $(echo $1 | awk -F "/" '{print $NF}') into $(echo $2 | awk -F "/" '{print $NF}') partition"
-  fi
-  unzip -p "$ZIPFILE" $1 | $bin/zstd -c -d >$2
-}
-
 keyListener() {
   if [ "$lang" == "chinese" ]; then
     ui_print "按下 [音量+] 选择 是，按下 [音量-] 选择 否"
@@ -61,14 +52,6 @@ keyListener_2() {
     keyListener_2
   fi
 }
-
-bin=/tmp/bin/android
-if [ -d $bin ]; then
-  rm -rf $bin
-fi
-mkdir -p $bin
-unzip "$ZIPFILE" bin/android/* -d /tmp
-chmod -R 0777 $bin
 
 if [ "$lang" == "chinese" ]; then
   ui_print " "
@@ -195,7 +178,7 @@ package_extract_file "images/xbl.img" "/dev/block/by-name/xbl_a"
 package_extract_file "images/xbl.img" "/dev/block/by-name/xbl_b"
 # flash firmware done
 package_extract_file "images/cust.img" "/dev/block/by-name/cust"
-package_extract_zstd "images/super.img.zst" "/dev/block/by-name/super"
+package_extract_file "images/super.img.zst" "/dev/block/by-name/super"
 
 if [ "$lang" == "chinese" ]; then
   ui_print " "
