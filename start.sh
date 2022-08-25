@@ -14,16 +14,14 @@ function main(){
 	${rootPath}/bin/payload-dumper-go -o ${rootPath}/out/images payload.bin > /dev/null 2>&1
 	rm -rf payload.bin
 	unpackimg system
-	#unpackimg vendor
-	#unpackimg product
+	unpackimg vendor
+	unpackimg product
 	vbmeta
 	boot
 	modify
 	repackimg system
-	#repackimg vendor
-	#repackimg product
-	mv images/vendor.img vendor.img
-	mv images/product.img product.img
+	repackimg vendor
+	repackimg product
 	mv images/system_ext.img system_ext.img
 	mv images/odm.img odm.img
 	super
@@ -189,18 +187,18 @@ function modify(){
 	# sudo rm -rf system/system/system/priv-app/Music
 
 	# vendor
-	#sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' vendor/config/vendor_file_contexts
+	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' vendor/config/vendor_file_contexts
 
 	# 去除 AVB
-	#sudo sed -i 's/,avb//g' vendor/vendor/etc/fstab.qcom
-	#sudo sed -i 's/,avb=vbmeta_system//g' vendor/vendor/etc/fstab.qcom
-	#sudo sed -i 's/,avb_keys=\/avb\/q-gsi.avbpubkey:\/avb\/r-gsi.avbpubkey:\/avb\/s-gsi.avbpubkey//g' vendor/vendor/etc/fstab.qcom
+	sudo sed -i 's/,avb//g' vendor/vendor/etc/fstab.qcom
+	sudo sed -i 's/,avb=vbmeta_system//g' vendor/vendor/etc/fstab.qcom
+	sudo sed -i 's/,avb_keys=\/avb\/q-gsi.avbpubkey:\/avb\/r-gsi.avbpubkey:\/avb\/s-gsi.avbpubkey//g' vendor/vendor/etc/fstab.qcom
 
 
 	# product
-	#sudo sed -i '0,/[a-z]\+\/lost\\+fou#nd/{/[a-z]\+\/lost\\+found/d}' product/config/product_file_contexts
+	sudo sed -i '0,/[a-z]\+\/lost\\+fou#nd/{/[a-z]\+\/lost\\+found/d}' product/config/product_file_contexts
 	# 百度输入法
-	#sudo rm -rf product/product/data-app/BaiduIME
+	sudo rm -rf product/product/data-app/BaiduIME
 
 	# DC调光
 	# sudo sed -i 's/<bool name=\"support_dc_backlight\">false<\/bool>/<bool name=\"support_dc_backlight\">true<\/bool>/g' product/product/etc/device_features/*xml
