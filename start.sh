@@ -111,40 +111,40 @@ function modify(){
 
 	# system
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system/config/system_file_contexts
-	#sudo sh -c "cat ${rootPath}/files/config/system_file_contexts_add.txt >> system/config/system_file_contexts"
-	#sudo sh -c "cat ${rootPath}/files/config/system_fs_config_add.txt >> system/config/system_fs_config"
+	sudo sh -c "cat ${rootPath}/files/config/system_file_contexts_add.txt >> system/config/system_file_contexts"
+	sudo sh -c "cat ${rootPath}/files/config/system_fs_config_add.txt >> system/config/system_fs_config"
 
 	sudo rm -rf system/system/verity_key
-	#sudo rm -rf system/system/system/media/theme/miui_mod_icons/dynamic/com.google.android.apps.nbu
+	sudo rm -rf system/system/system/media/theme/miui_mod_icons/dynamic/com.google.android.apps.nbu
 
-	# sudo cp -rf ${rootPath}/files/config/com.android.settings system/system/system/media/theme/default/com.android.settings
-	# sudo cp -rf ${rootPath}/files/config/com.android.systemui system/system/system/media/theme/default/com.android.systemui
+	sudo cp -rf ${rootPath}/files/config/com.android.settings system/system/system/media/theme/default/com.android.settings
+	sudo cp -rf ${rootPath}/files/config/com.android.systemui system/system/system/media/theme/default/com.android.systemui
 	# Analytics
 	#sudo rm -rf system/system/system/app/AnalyticsCore/*
 	#sudo cp ${rootPath}/files/app/AnalyticsCore.apk system/system/system/app/AnalyticsCore/AnalyticsCore.apk
 	# 酷安
-	#sudo mkdir system/system/system/data-app/CoolApk
-	#sudo cp ${rootPath}/files/app/CoolApk.apk system/system/system/data-app/CoolApk/CoolApk.apk
+	sudo mkdir system/system/system/data-app/CoolApk
+	sudo cp ${rootPath}/files/app/CoolApk.apk system/system/system/data-app/CoolApk/CoolApk.apk
 	# MT管理器
-	#sudo mkdir system/system/system/data-app/MTManager
-	#sudo cp ${rootPath}/files/app/MTManager.apk system/system/system/data-app/MTManager/MTManager.apk
+	sudo mkdir system/system/system/data-app/MTManager
+	sudo cp ${rootPath}/files/app/MTManager.apk system/system/system/data-app/MTManager/MTManager.apk
 	# Magisk
-	#sudo mkdir system/system/system/data-app/Magisk
-	#sudo cp ${rootPath}/files/app/Magisk.apk system/system/system/data-app/Magisk/Magisk.apk
+	sudo mkdir system/system/system/data-app/Magisk
+	sudo cp ${rootPath}/files/app/Magisk.apk system/system/system/data-app/Magisk/Magisk.apk
 	# 系统更新
-	#sudo mv system/system/system/app/Updater/Updater.apk system/system/system/app/Updater/Updater.apk.bak
+	sudo mv system/system/system/app/Updater/Updater.apk system/system/system/app/Updater/Updater.apk.bak
 	# 电商助手
-	#sudo rm -rf system/system/system/app/mab
+	sudo rm -rf system/system/system/app/mab
 	#
-	#sudo rm -rf system/system/system/app/MiuiBugReport
+	sudo rm -rf system/system/system/app/MiuiBugReport
 	# 应用商店
-	#sudo rm -rf system/system/system/app/MIUISuperMarket
+	sudo rm -rf system/system/system/app/MIUISuperMarket
 	#
-	#sudo rm -rf system/system/system/app/MSA
+	sudo rm -rf system/system/system/app/MSA
 	# 搜狗输入法
-	#sudo rm -rf system/system/system/app/SougouInput
+	sudo rm -rf system/system/system/app/SougouInput
 	#
-	#sudo rm -rf system/system/system/app/Stk
+	sudo rm -rf system/system/system/app/Stk
 	#
 	sudo rm -rf system/system/system/data-app/com.ss.android.article.video_154
 	#
@@ -178,13 +178,13 @@ function modify(){
 	# wps-lite
 	sudo rm -rf system/system/system/data-app/wps-lite
 
-	#sudo rm -rf system/system/system/priv-app/MIService
+	sudo rm -rf system/system/system/priv-app/MIService
 	# 浏览器
-	#sudo rm -rf system/system/system/priv-app/MIUIBrowser
+	sudo rm -rf system/system/system/priv-app/MIUIBrowser
 	# 传送门
-	#sudo rm -rf system/system/system/priv-app/MIUIContentExtension
+	sudo rm -rf system/system/system/priv-app/MIUIContentExtension
 	# 搜索
-	#sudo rm -rf system/system/system/priv-app/MIUIQuickSearchBox
+	sudo rm -rf system/system/system/priv-app/MIUIQuickSearchBox
 	# 音乐
 	# sudo rm -rf system/system/system/priv-app/Music
 
