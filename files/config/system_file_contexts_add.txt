@@ -1,9 +1,0 @@
-/system/system/media/theme/default/com\.android\.settings u:object_r:system_file:s0
-/system/system/media/theme/default/com\.android\.systemui u:object_r:system_file:s0
-/system/system/data-app/CoolApk u:object_r:system_file:s0
-/system/system/data-app/CoolApk/CoolApk\.apk u:object_r:system_file:s0
-/system/system/data-app/MTManager u:object_r:system_file:s0
-/system/system/data-app/MTManager/MTManager\.apk u:object_r:system_file:s0
-/system/system/data-app/Magisk u:object_r:system_file:s0
-/system/system/data-app/Magisk/Magisk\.apk u:object_r:system_file:s0
-/system/system/app/Updater/Updater\.apk\.bak u:object_r:system_file:s0

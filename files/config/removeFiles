@@ -1,0 +1,58 @@
+system/system/verity_key
+system/system/system/media/theme/miui_mod_icons/dynamic/com.google.android.apps.nbu
+# 电商助手
+system/system/system/app/mab
+#
+system/system/system/app/MiBugReport
+# 应用商店
+system/system/system/app/MIUISuperMarket
+#
+system/system/system/app/MSA
+# 搜狗输入法
+system/system/system/app/SougouInput
+#
+system/system/system/app/Stk
+#
+system/system/system/data-app/com.ss.android.article.video_154
+#
+system/system/system/data-app/com.ss.android.ugc.aweme_15
+#
+system/system/system/data-app/com.taobao.taobao_24
+#
+system/system/system/data-app/com.youku.phone_136
+#
+system/system/system/data-app/com.zhihu.android_28
+# 小米云盘
+system/system/system/data-app/MiDrive
+# 锁屏画报
+system/system/system/data-app/MIGalleryLockscreen
+# 小米商城
+system/system/system/data-app/MIShop
+# 计算器
+system/system/system/data-app/MIUICalculator
+#
+system/system/system/data-app/MIUIDuokanReader
+#
+system/system/system/data-app/MIUIGameCenter
+#
+system/system/system/data-app/MIUIHuanji
+#
+system/system/system/data-app/MIUINewHome
+# 小米有品
+system/system/system/data-app/MIUIYoupin
+# 米家
+system/system/system/data-app/SmartHome
+# wps-lite
+system/system/system/data-app/wps-lite
+#
+system/system/system/priv-app/MIService
+# 浏览器
+system/system/system/priv-app/MIUIBrowser
+# 传送门
+system/system/system/priv-app/MIUIContentExtension
+# 搜索
+# system/system/system/priv-app/MIUIQuickSearchBox
+# 音乐
+# system/system/system/priv-app/Music
+# 百度输入法
+product/product/data-app/BaiduIME

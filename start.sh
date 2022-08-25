@@ -1,4 +1,11 @@
 #!/bin/bash
+############################################
+# File Name: start.sh
+# Version: v1.0
+# Author: chuest
+# Organization: NULL
+# Github: https://github.com/chuest/RomTools
+############################################
 
 function main(){
 	romName=${1}
@@ -107,86 +114,40 @@ function vbmeta(){
 
 function modify(){
 
-	# system
+	##### system
+	### Modify config
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' system/config/system_file_contexts
-	sudo sh -c "cat ${rootPath}/files/config/system_file_contexts_add.txt >> system/config/system_file_contexts"
-	sudo sh -c "cat ${rootPath}/files/config/system_fs_config_add.txt >> system/config/system_fs_config"
+	sudo sh -c "cat ${rootPath}/files/config/files/config/systemContextsAdd >> system/config/system_file_contexts"
+	sudo sh -c "cat ${rootPath}/files/config/files/config/systemConfigAdd >> system/config/system_fs_config"
 
-	sudo rm -rf system/system/verity_key
-	sudo rm -rf system/system/system/media/theme/miui_mod_icons/dynamic/com.google.android.apps.nbu
+	### Repalce files
+	# Analytics
+	# sudo rm -rf system/system/system/app/AnalyticsCore/*
+	# sudo cp ${rootPath}/files/app/AnalyticsCore.apk system/system/system/app/AnalyticsCore/AnalyticsCore.apk
+	# 系统更新
+	sudo mv system/system/system/app/Updater/Updater.apk system/system/system/app/Updater/Updater.apk.bak
 
+	### Add files
+	# theme
 	sudo cp -rf ${rootPath}/files/config/com.android.settings system/system/system/media/theme/default/com.android.settings
 	sudo cp -rf ${rootPath}/files/config/com.android.systemui system/system/system/media/theme/default/com.android.systemui
-	# Analytics
-	#sudo rm -rf system/system/system/app/AnalyticsCore/*
-	#sudo cp ${rootPath}/files/app/AnalyticsCore.apk system/system/system/app/AnalyticsCore/AnalyticsCore.apk
 	# 酷安
 	sudo mkdir system/system/system/data-app/CoolApk
 	sudo cp ${rootPath}/files/app/CoolApk.apk system/system/system/data-app/CoolApk/CoolApk.apk
-	# MT管理器
-	sudo mkdir system/system/system/data-app/MTManager
-	sudo cp ${rootPath}/files/app/MTManager.apk system/system/system/data-app/MTManager/MTManager.apk
 	# Magisk
-	sudo mkdir system/system/system/data-app/Magisk
-	sudo cp ${rootPath}/files/app/Magisk.apk system/system/system/data-app/Magisk/Magisk.apk
-	# 系统更新
-	sudo mv system/system/system/app/Updater/Updater.apk system/system/system/app/Updater/Updater.apk.bak
-	# 电商助手
-	sudo rm -rf system/system/system/app/mab
-	#
-	sudo rm -rf system/system/system/app/MiuiBugReport
-	# 应用商店
-	sudo rm -rf system/system/system/app/MIUISuperMarket
-	#
-	sudo rm -rf system/system/system/app/MSA
-	# 搜狗输入法
-	sudo rm -rf system/system/system/app/SougouInput
-	#
-	sudo rm -rf system/system/system/app/Stk
-	#
-	sudo rm -rf system/system/system/data-app/com.ss.android.article.video_154
-	#
-	sudo rm -rf system/system/system/data-app/com.ss.android.ugc.aweme_15
-	#
-	sudo rm -rf system/system/system/data-app/com.taobao.taobao_24
+	# sudo mkdir system/system/system/data-app/Magisk
+	# sudo cp ${rootPath}/files/app/Magisk.apk system/system/system/data-app/Magisk/Magisk.apk
 
-	sudo rm -rf system/system/system/data-app/com.youku.phone_136
+	### Remove files
+	for file in $(cat ${rootPath}/files/config/removeFiles) ; do
+		if [ -f "${file}" ] || [ -d "${file}" ] ;then
+			sudo rm -rf "${file}"
+		fi
+	done
 
-	sudo rm -rf system/system/system/data-app/com.zhihu.android_28
-	# 小米云盘
-	sudo rm -rf system/system/system/data-app/MiDrive
-	# 锁屏画报
-	sudo rm -rf system/system/system/data-app/MIGalleryLockscreen
-	# 小米商城
-	sudo rm -rf system/system/system/data-app/MIShop
-	# 计算器
-	sudo rm -rf system/system/system/data-app/MIUICalculator
 
-	sudo rm -rf system/system/system/data-app/MIUIDuokanReader
+	##### vendor
 
-	sudo rm -rf system/system/system/data-app/MIUIGameCenter
-
-	sudo rm -rf system/system/system/data-app/MIUIHuanji
-
-	sudo rm -rf system/system/system/data-app/MIUINewHome
-	# 小米有品
-	sudo rm -rf system/system/system/data-app/MIUIYoupin
-	# 米家
-	sudo rm -rf system/system/system/data-app/SmartHome
-	# wps-lite
-	sudo rm -rf system/system/system/data-app/wps-lite
-
-	sudo rm -rf system/system/system/priv-app/MIService
-	# 浏览器
-	sudo rm -rf system/system/system/priv-app/MIUIBrowser
-	# 传送门
-	sudo rm -rf system/system/system/priv-app/MIUIContentExtension
-	# 搜索
-	sudo rm -rf system/system/system/priv-app/MIUIQuickSearchBox
-	# 音乐
-	# sudo rm -rf system/system/system/priv-app/Music
-
-	# vendor
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' vendor/config/vendor_file_contexts
 
 	# 去除 AVB
@@ -195,14 +156,13 @@ function modify(){
 	sudo sed -i 's/,avb_keys=\/avb\/q-gsi.avbpubkey:\/avb\/r-gsi.avbpubkey:\/avb\/s-gsi.avbpubkey//g' vendor/vendor/etc/fstab.qcom
 
 
-	# product
-	sudo sed -i '0,/[a-z]\+\/lost\\+fou#nd/{/[a-z]\+\/lost\\+found/d}' product/config/product_file_contexts
-	# 百度输入法
-	sudo rm -rf product/product/data-app/BaiduIME
+	##### product
+
+	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' product/config/product_file_contexts
 
 	# DC调光
-	# sudo sed -i 's/<bool name=\"support_dc_backlight\">false<\/bool>/<bool name=\"support_dc_backlight\">true<\/bool>/g' product/product/etc/device_features/*xml
-	# sudo sed -i 's/<bool name=\"support_secret_dc_backlight\">true<\/bool>/<bool name=\"support_secret_dc_backlight\">false<\/bool>/g' product/product/etc/device_features/*xml
+	sudo sed -i 's/<bool name=\"support_dc_backlight\">false<\/bool>/<bool name=\"support_dc_backlight\">true<\/bool>/g' product/product/etc/device_features/*xml
+	sudo sed -i 's/<bool name=\"support_secret_dc_backlight\">true<\/bool>/<bool name=\"support_secret_dc_backlight\">false<\/bool>/g' product/product/etc/device_features/*xml
 
 	# 智能护眼
 	# sudo sed -i '/<\/features>/i\    <bool name=\"support_smart_eyecare\">true<\/bool>' product/product/etc/device_features/*xml

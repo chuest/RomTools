@@ -3,31 +3,17 @@
 OUTFD=/proc/self/fd/$2
 ZIPFILE="$3"
 
-if [[ "$(grep -n 'PageManager::LoadFileToBuffer loading filename:.*language.*' /tmp/recovery.log | tail -1)" == *"zh_"* ]]; then
-  lang=chinese
-else
-  lang=english
-fi
-
 ui_print() {
   echo -e "ui_print $1\nui_print" >>$OUTFD
 }
 
 package_extract_file() {
-  if [ "$lang" == "chinese" ]; then
-    ui_print " - 正在刷入 $(echo $1 | awk -F "/" '{print $NF}') 至 $(echo $2 | awk -F "/" '{print $NF}') 分区"
-  else
-    ui_print " - flash $(echo $1 | awk -F "/" '{print $NF}') into $(echo $2 | awk -F "/" '{print $NF}') partition"
-  fi
+  ui_print " - 正在刷入 $(echo $1 | awk -F "/" '{print $NF}') 至 $(echo $2 | awk -F "/" '{print $NF}') 分区"
   unzip -p "$ZIPFILE" $1 >$2
 }
 
 keyListener() {
-  if [ "$lang" == "chinese" ]; then
-    ui_print "按下 [音量+] 选择 是，按下 [音量-] 选择 否"
-  else
-    ui_print "Press [volume +] to select Yes, and press [volume -] to select No"
-  fi
+  ui_print "按下 [音量+] 选择 是，按下 [音量-] 选择 否"
   ui_print ""
   keyListener_2
 }
@@ -35,25 +21,17 @@ keyListener() {
 keyListener_2() {
   getevent -qlc 1 2>&1 | grep VOLUME | grep " DOWN" >/tmp/events
   if $(grep -q "VOLUMEUP" /tmp/events); then
-    if [ "$lang" == "chinese" ]; then
-      ui_print " - 正在执行中，请稍后......"
-    else
-      ui_print " - Executing, please wait......"
-    fi
+    ui_print " - 正在执行中，请稍后......"
     return 0
   elif $(grep -q "VOLUMEDOWN" /tmp/events); then
-    if [ "$lang" == "chinese" ]; then
-      ui_print " - 正在执行中，请稍后......"
-    else
-      ui_print " - Executing, please wait......"
-    fi
+    ui_print " - 正在执行中，请稍后......"
     return 1
   else
     keyListener_2
   fi
 }
 
-if [ "$lang" == "chinese" ]; then
+
   ui_print " "
   ui_print " "
   ui_print "======================================"
@@ -63,39 +41,17 @@ if [ "$lang" == "chinese" ]; then
   ui_print " "
   ui_print " "
   ui_print "是否需要校验ROM包完整性，以防止损坏导致刷机失败"
-else
-  ui_print " "
-  ui_print " "
-  ui_print "======================================"
-  ui_print "ROM Author: chuest"
-  ui_print "Github: https://github.com/chuest"
-  ui_print "======================================"
-  ui_print " "
-  ui_print " "
-  ui_print "Prevent flash failure, Do you need to verify the integrity of ROM package? "
-fi
+
 
 if keyListener; then
   localmd5=$(md5sum $ZIPFILE)
   if [[ "$ZIPFILE" != *"${localmd5:0:10}"* ]]; then
-    if [ "$lang" == "chinese" ]; then
-      ui_print "未在本地包名中找到对应的MD5，该ROM包已损坏"
-    else
-      ui_print "The corresponding MD5 is not found in the local package name, and the ROM package is damaged"
-    fi
+    ui_print "未在本地包名中找到对应的MD5，该ROM包已损坏"
     exit 1
   fi
-  if [ "$lang" == "chinese" ]; then
-    ui_print "已完成校验ROM包完整性"
-  else
-    ui_print "Finished verifying ROM package integrity"
-  fi
+  ui_print "已完成校验ROM包完整性"
 else
-  if [ "$lang" == "chinese" ]; then
-    ui_print "已跳过校验ROM包完整性"
-  else
-    ui_print "Skipped verifying ROM package integrity"
-  fi
+  ui_print "已跳过校验ROM包完整性"
 fi
 ui_print " "
 ui_print " "
@@ -103,33 +59,17 @@ ui_print " "
 
 package_extract_file "images/boot.img" "/dev/block/by-name/boot_a"
 package_extract_file "images/boot.img" "/dev/block/by-name/boot_b"
-if [ "$lang" == "chinese" ]; then
-  ui_print "已完成安装 Magisk"
-else
-  ui_print "Finished installing Magisk"
-fi
+ui_print "已完成安装 Magisk"
 ui_print " "
 ui_print " "
-if [ "$lang" == "chinese" ]; then
-  ui_print "是否关闭全部Magisk模块，防止模块不兼容该版本导致无法开机"
-else
-  ui_print "Whether to turn off all magisk modules to prevent the module from being incompatible with this version and being unable to boot"
-fi
+ui_print "是否关闭全部Magisk模块，防止模块不兼容该版本导致无法开机"
 if keyListener; then
   for list in $(ls -d /data/adb/modules/*); do
     touch $list/disable
   done
-  if [ "$lang" == "chinese" ]; then
-    ui_print "已完成关闭全部Magisk模块"
-  else
-    ui_print "Finished closing all magisk modules"
-  fi
+  ui_print "已完成关闭全部Magisk模块"
 else
-  if [ "$lang" == "chinese" ]; then
-    ui_print "已取消关闭全部Magisk模块"
-  else
-    ui_print "Closed all magisk modules canceled"
-  fi
+  ui_print "已取消关闭全部Magisk模块"
 fi
 
 ui_print " "
@@ -178,25 +118,16 @@ package_extract_file "images/xbl.img" "/dev/block/by-name/xbl_a"
 package_extract_file "images/xbl.img" "/dev/block/by-name/xbl_b"
 # flash firmware done
 package_extract_file "images/cust.img" "/dev/block/by-name/cust"
-package_extract_file "images/super.img.zst" "/dev/block/by-name/super"
+package_extract_file "images/super.img" "/dev/block/by-name/super"
 
-if [ "$lang" == "chinese" ]; then
-  ui_print " "
-  ui_print " "
-  ui_print "======================================"
-  ui_print "刷机已完成，红色挂载报错请忽略"
-  ui_print "======================================"
-  ui_print " "
-  ui_print " "
-else
-  ui_print " "
-  ui_print " "
-  ui_print "======================================"
-  ui_print "Flashing has been completed, please ignore the red mount error"
-  ui_print "======================================"
-  ui_print " "
-  ui_print " "
-fi
+
+ui_print " "
+ui_print " "
+ui_print "======================================"
+ui_print "刷机已完成，红色挂载报错请忽略"
+ui_print "======================================"
+ui_print " "
+ui_print " "
 
 bootctl set-active-boot-slot a
 lptools unmap system
