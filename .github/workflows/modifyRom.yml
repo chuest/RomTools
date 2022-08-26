@@ -52,7 +52,6 @@ jobs:
         echo "PATH=$PWD" >> $GITHUB_ENV
         echo "NAME=${name}" >> $GITHUB_ENV
 
-
     - name: Check space usage
       if: (!cancelled())
       run: df -hT
