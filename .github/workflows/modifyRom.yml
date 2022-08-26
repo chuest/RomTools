@@ -62,8 +62,8 @@ jobs:
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
       with:
-        name: ${{ env.ROMNAME }}.zip
-        path: ${{ env.ROMPATH }}
+        name: ${{ env.ROMNAME }}
+        path: ${{ env.ROMPATH }}/${{ env.ROMNAME }}.zip
 
     - name: Organize files to server
       run: |
