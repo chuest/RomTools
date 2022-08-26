@@ -46,26 +46,29 @@ jobs:
         sudo chmod 777 -R RomTools
         cd RomTools
         ./start.sh ${{github.event.inputs.miui}}
-        cd out
-        name=miui_alioth_$(echo "${{github.event.inputs.miui}}" | awk -F "_" '{print $3}')_$(((md5sum rom.zip) | awk '{print $1}') | cut -c -10)_12.0
-        mv rom.zip ${name}.zip
-        echo "PATH=$PWD" >> $GITHUB_ENV
-        echo "NAME=${name}" >> $GITHUB_ENV
 
     - name: Check space usage
       if: (!cancelled())
       run: df -hT
 
+    - name: Organize files
+      run: |
+        cd RomTools/out
+        name=miui_alioth_$(echo "${{github.event.inputs.miui}}" | awk -F "_" '{print $3}')_$(((md5sum rom.zip) | awk '{print $1}') | cut -c -10)_12.0
+        mv rom.zip ${name}.zip
+        echo "ROMPATH=$PWD" >> $GITHUB_ENV
+        echo "ROMNAME=${name}" >> $GITHUB_ENV
+
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
       with:
-        name: ${{ env.NAME }}.zip
-        path: ${{ env.PATH }}
+        name: ${{ env.ROMNAME }}.zip
+        path: ${{ env.ROMPATH }}
 
     - name: Organize files to server
       run: |
         cd RomTools/out
-        aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload ${{ env.NAME }}.zip root/alist/Rom/alioth
+        aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload -t 15 -c ${{ env.ROMNAME }}.zip root/alist/Rom/alioth
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
