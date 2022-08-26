@@ -155,6 +155,7 @@ function modify(){
 	sudo sed -i '0,/[a-z]\+\/lost\\+found/{/[a-z]\+\/lost\\+found/d}' vendor/config/vendor_file_contexts
 
 	# 去除 AVB
+	# 顺序很重要
 	sudo sed -i 's/,avb_keys=\/avb\/q-gsi.avbpubkey:\/avb\/r-gsi.avbpubkey:\/avb\/s-gsi.avbpubkey//g' vendor/vendor/etc/fstab.qcom
 	sudo sed -i 's/,avb=vbmeta_system//g' vendor/vendor/etc/fstab.qcom
 	sudo sed -i 's/,avb//g' vendor/vendor/etc/fstab.qcom

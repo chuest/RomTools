@@ -56,7 +56,7 @@ jobs:
         cd RomTools/out
         name=miui_alioth_$(echo "${{github.event.inputs.miui}}" | awk -F "_" '{print $3}')_$(((md5sum rom.zip) | awk '{print $1}') | cut -c -10)_12.0
         mv rom.zip ${name}.zip
-        aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload -c ${name}.zip root/alist/Rom/alioth
+        aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload -t 15 -c ${name}.zip root/alist/Rom/alioth
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
