@@ -7,6 +7,10 @@ on:
         description: 'MIUI Rom name'
         required: false
 
+env:
+  UPLOAD_FIRMWARE: true
+  UPLOAD_SERVER: false
+
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -61,11 +65,13 @@ jobs:
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       with:
         name: ${{ env.ROMNAME }}
         path: ${{ env.ROMPATH }}/${{ env.ROMNAME }}.zip
 
     - name: Organize files to server
+      if: env.UPLOAD_SERVER == 'true' && !cancelled()
       run: |
         cd RomTools/out
         aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload -t 15 -c ${{ env.ROMNAME }}.zip root/alist/Rom/alioth
