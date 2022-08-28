@@ -8,7 +8,7 @@ on:
         required: false
 
 env:
-  UPLOAD_FIRMWARE: true
+  UPLOAD_FIRMWARE: false
   UPLOAD_SERVER: false
   UPLOAD_RELEASE: true
 
