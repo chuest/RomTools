@@ -7,17 +7,22 @@
 # Github: https://github.com/chuest/RomTools
 ############################################
 
+N='\033[0m'
+R='\033[31m'
+G='\033[32m'
+B='\033[34m'
+
 function main(){
 	romName=${1}
 	rootPath=`pwd`
 	mkdir out
-	echo "正在解压刷机包"
+	echo -e "$(date + "%m/%d %H:%M:%S") [${G}NOTICE${N}] 正在解压刷机包"
 	unzip -o $romName -d out
 	rm -rf $romName
 	cd out
 	mkdir images
 	rm -rf META-INF apex_info.pb care_map.pb payload_properties.txt
-	echo "正在解压 payload.bin"
+	echo -e "$(date + "%m/%d %H:%M:%S") [${G}NOTICE${N}] 正在解压 payload.bin"
 	${rootPath}/bin/payload-dumper-go -o ${rootPath}/out/images payload.bin > /dev/null 2>&1
 	rm -rf payload.bin
 	unpackimg system
@@ -40,7 +45,7 @@ function main(){
 function unpackimg(){
 	### 解包
 	mv images/${1}.img ${1}.img
-	echo "正在解压 ${1}.img"
+	echo -e "$(date + "%m/%d %H:%M:%S") [${G}NOTICE${N}] 正在解压 ${1}.img"
 	sudo python3 ${rootPath}/bin/imgextractor.py ${1}.img ${1}
 	rm -rf ${1}.img
 }
@@ -54,7 +59,7 @@ function repackimg(){
 	imgSize=`echo "$(sudo du -sb ${rootPath}/out/${name} | awk {'print $1'}) + 104857600" | bc`
 	outImg="${rootPath}/out/${name}.img"
 	inFiles="${rootPath}/out/${name}/${name}"
-	echo "正在打包 ${1}.img"
+	echo -e "$(date + "%m/%d %H:%M:%S") [${G}NOTICE${N}] 正在打包 ${1}.img"
 	sudo ${rootPath}/bin/make_ext4fs -J -T 1640966400 -S $fileContexts -l $imgSize -C $fsConfig -L $name -a $name $outImg $inFiles
 }
 
@@ -67,7 +72,7 @@ function boot(){
 	# 去除 AVB 验证
 	mv images/boot.img boot.img
 	mv images/vendor_boot.img vendor_boot.img
-	echo "正在使用 magisk 修补 boot"
+	echo -e "$(date + "%m/%d %H:%M:%S") [${G}NOTICE${N}] 正在使用 magisk 修补 boot"
 	sudo ${rootPath}/bin/magiskboot unpack boot.img >/dev/null 2>&1
 	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
 	for dt in dtb kernel_dtb extra; do
@@ -78,7 +83,7 @@ function boot(){
 	[ -f new-boot.img ] && cp -rf new-boot.img ${rootPath}/out/images/boot.img
 	sudo rm -rf new-boot.img
 
-	echo "正在使用 magisk 修补 vendor_boot"
+	echo -e "$(date + "%m/%d %H:%M:%S") [${G}NOTICE${N}] 正在使用 magisk 修补 vendor_boot"
 	sudo ${rootPath}/bin/magiskboot unpack vendor_boot.img >/dev/null 2>&1
 	sudo ${rootPath}/bin/magiskboot cpio ramdisk.cpio patch
 	for dt in dtb kernel_dtb extra; do
@@ -104,7 +109,7 @@ function boot(){
 
 function vbmeta(){
 	# 替换 vbmeta 镜像
-	echo "正在去除 vbmeta 验证"
+	echo -e "$(date + "%m/%d %H:%M:%S") [${G}NOTICE${N}] 正在去除 vbmeta 验证"
 	cp -rf ${rootPath}/files/images/vbmeta.img ${rootPath}/out/images/vbmeta.img
 	cp -rf ${rootPath}/files/images/vbmeta_system.img ${rootPath}/out/images/vbmeta_system.img
 
@@ -144,7 +149,7 @@ function modify(){
 	### Remove files
 	for file in $(cat ${rootPath}/files/config/removeFiles) ; do
 		if [ -f "${file}" ] || [ -d "${file}" ] ;then
-			echo "Delete ${file}"
+			echo -e "$(date + "%m/%d %H:%M:%S") [${G}NOTICE${N}] Delete ${file}"
 			sudo rm -rf "${file}"
 		fi
 	done

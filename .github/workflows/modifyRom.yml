@@ -8,9 +8,8 @@ on:
         required: false
 
 env:
-  UPLOAD_FIRMWARE: false
+  UPLOAD_FIRMWARE: true
   UPLOAD_SERVER: false
-  UPLOAD_RELEASE: true
 
 jobs:
   build:
@@ -59,13 +58,10 @@ jobs:
     - name: Organize files
       run: |
         cd RomTools/out
-        version=$(echo "${{github.event.inputs.miui}}" | awk -F "_" '{print $3}')
-        name=miui_alioth_${version}_$(((md5sum rom.zip) | awk '{print $1}') | cut -c -10)_12.0
+        name=miui_alioth_$(echo "${{github.event.inputs.miui}}" | awk -F "_" '{print $3}')_$(((md5sum rom.zip) | awk '{print $1}') | cut -c -10)_12.0
         mv rom.zip ${name}.zip
         echo "ROMPATH=$PWD" >> $GITHUB_ENV
         echo "ROMNAME=${name}" >> $GITHUB_ENV
-        echo "ROMVERSION=${version}" >> $GITHUB_ENV
-
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
@@ -80,35 +76,8 @@ jobs:
         cd RomTools/out
         aliyunpan-cli --refresh-token ${{ secrets.REFRESH_TOKEN }} upload -t 15 -c ${{ env.ROMNAME }}.zip root/alist/Rom/alioth
 
-    - name: Generate release tag
-      id: tag
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      run: |
-        echo "::set-output name=release_tag::${{ env.ROMVERSION }}"
-        touch release.txt
-        echo "::set-output name=status::success"
-
-    - name: Upload firmware to release
-      uses: softprops/action-gh-release@v1
-      if: steps.tag.outputs.status == 'success' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
-        body_path: release.txt
-        files: ${{ env.ROMPATH }}/${{ env.ROMNAME }}.zip
-
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
       with:
         retain_days: 1
         keep_minimum_runs: 3
-
-    - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.1.0
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      with:
-        keep_latest: 3
-        delete_tags: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
