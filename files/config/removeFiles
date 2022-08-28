@@ -5,7 +5,7 @@ system/system/system/app/mab
 #
 system/system/system/app/MiBugReport
 # 应用商店
-system/system/system/app/MIUISuperMarket
+# system/system/system/app/MIUISuperMarket
 #
 system/system/system/app/MSA
 # 搜狗输入法
@@ -51,7 +51,7 @@ system/system/system/priv-app/MIUIBrowser
 # 传送门
 system/system/system/priv-app/MIUIContentExtension
 # 搜索
-# system/system/system/priv-app/MIUIQuickSearchBox
+system/system/system/priv-app/MIUIQuickSearchBox
 # 音乐
 # system/system/system/priv-app/Music
 # 百度输入法
