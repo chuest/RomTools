@@ -4,8 +4,6 @@ system/system/system/media/theme/miui_mod_icons/dynamic/com.google.android.apps.
 system/system/system/app/mab
 #
 system/system/system/app/MiBugReport
-# 应用商店
-# system/system/system/app/MIUISuperMarket
 #
 system/system/system/app/MSA
 # 搜狗输入法
@@ -52,7 +50,5 @@ system/system/system/priv-app/MIUIBrowser
 system/system/system/priv-app/MIUIContentExtension
 # 搜索
 system/system/system/priv-app/MIUIQuickSearchBox
-# 音乐
-# system/system/system/priv-app/Music
 # 百度输入法
 product/product/data-app/BaiduIME
