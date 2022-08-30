@@ -12,17 +12,14 @@
 
 fork 本项目，并在 Secret 处填入阿里云盘的 Token 后，在 Actions 界面创建工作流，创建时填入开发版包名即可。
 
-## Change 👋
+## Changes
 
-修改系统分区可读写
+- 修改系统分区可读写
+- 精简部分无用 APP
+- 内置酷安
+- 加入 DC 调光
 
-精简部分无用 APP
-
-内置酷安
-
-加入 DC 调光
-
-## Features 👋
+## Features
 
 > 欢迎大家 PR
 
@@ -34,11 +31,11 @@ fork 本项目，并在 Secret 处填入阿里云盘的 Token 后，在 Actions 
 | ... |  |
 
 
-## Thanks 👋
+## Thanks
 
 - [xiaoxindada](https://github.com/xiaoxindada/SGSI-build-tool)
 - [ssut](https://github.com/ssut/payload-dumper-go)
 
-## Visitors 👋
+## Visitors
 
 ![:name](https://count.getloli.com/get/@:name)
